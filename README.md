@@ -1,4 +1,4 @@
-# десятая проектная работа: mesto-react
+# десятая проектная работа: mesto-react-auth
 
 ### css
 * Grid-layout
@@ -7,7 +7,8 @@
 
 ### JavaScript
 * React JS
-
+* Авторизая
+* Регистрация
 
 
 

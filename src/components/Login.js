@@ -1,12 +1,12 @@
 import React from 'react';
 
 
-const Login = ({onLogin}) => {
+const Login = ({ onLogin }) => {
 
   const [enteredValues, setEnteredValues] = React.useState({});
 
   const handleChange = (event) => {
-    const {name, value} = event.target;
+    const { name, value } = event.target;
     setEnteredValues({
       ...enteredValues,
       [name]: value,
@@ -15,13 +15,16 @@ const Login = ({onLogin}) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!enteredValues.email || !enteredValues.password) {
+      return;
+    }
     onLogin(enteredValues);
   };
 
-    return (
-        <div className="auth">
-           <h2 className="auth__title">Вход</h2>
-        <form className="auth__form" noValidate onSubmit={handleSubmit}>
+  return (
+    <div className="auth">
+      <h2 className="auth__title">Вход</h2>
+      <form className="auth__form" noValidate onSubmit={handleSubmit}>
         <input
           type="email"
           placeholder="Email"

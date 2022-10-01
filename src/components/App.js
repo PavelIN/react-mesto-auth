@@ -34,8 +34,8 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
   const [isRegistrationSuccessful, setIsRegistrationSuccessful] = React.useState(false);
+  const [isEmail, setIsEmail] = React.useState('');
 
-  
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
@@ -156,56 +156,84 @@ function App() {
 
   const handleRegistration = (data) => {
     return auth
-    .register(data)
-    .then( () => {
-      setIsRegistrationSuccessful(true);
-      openInfoTooltip();
-      hist.push('/sign-in');
-    })
-    .catch((err) => {
-      console.log(err);
-      setIsRegistrationSuccessful(false);
-      openInfoTooltip();
-    });
+      .register(data)
+      .then(() => {
+        setIsRegistrationSuccessful(true);
+        openInfoTooltip();
+        hist.push('/sign-in');
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsRegistrationSuccessful(false);
+        openInfoTooltip();
+      });
   }
 
   const handleAuthorization = (data) => {
     return auth
-    .authorize(data)
-    .then( () => {
-      setIsLoggedIn(true);
-      hist.push('/');
-    })
-    .catch((err) => {
-      console.log(err);
-      openInfoTooltip();
-    });
+      .authorize(data)
+      .then((data) => {
+        setIsLoggedIn(true);
+        localStorage.setItem('jwt', data.token);
+        handleTokenCheck();
+        hist.push('/');
+      })
+      .catch((err) => {
+        console.log(err);
+        openInfoTooltip();
+      });
   }
+
+  const handleTokenCheck = () => {
+    const jwt = localStorage.getItem('jwt');
+    if (!jwt) {
+      return;
+    }
+    auth
+      .getContent(jwt)
+      .then((data) => {
+        setIsEmail(data.data.email);
+        setIsLoggedIn(true);
+        hist.push('/');
+      })
+      .catch((err) => console.log(err));
+  };
+
+  React.useEffect(() => {
+    handleTokenCheck();
+  }, [isLoggedIn]);
+
+  const handleSignOut = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem('jwt');
+    hist.push('/sign-in');
+  };
+
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="body">
         <div className="page">
-          <Header />
+          <Header email={isEmail} loggedIn={isLoggedIn} onSignOut={handleSignOut} />
           <Switch>
-          <Route path="/sign-in">
-            <Login onLogin={handleAuthorization} />
-          </Route>
-          <Route path="/sign-up">
-            <Register onRegister={handleRegistration} />
-          </Route>
-          <ProtectedRoute
-           path="/"
-           component={Main}
-           loggedIn={isLoggedIn}
-            onTrashClick={handleRemoveClick}
-            onEditAvatar={handleEditAvatarClick}
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onCardClick={handleCardClick}
-            cards={cards}
-            onCardLike={handleCardLike}
-          />
+            <Route path="/sign-in">
+              <Login onLogin={handleAuthorization} />
+            </Route>
+            <Route path="/sign-up">
+              <Register onRegister={handleRegistration} />
+            </Route>
+            <ProtectedRoute
+              path="/"
+              component={Main}
+              loggedIn={isLoggedIn}
+              onTrashClick={handleRemoveClick}
+              onEditAvatar={handleEditAvatarClick}
+              onEditProfile={handleEditProfileClick}
+              onAddPlace={handleAddPlaceClick}
+              onCardClick={handleCardClick}
+              cards={cards}
+              onCardLike={handleCardLike}
+            />
           </Switch>
           <Footer />
 
@@ -214,7 +242,7 @@ function App() {
           <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
           <ConfirmationPopup cardId={removedCardId} isOpen={selectDelete} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} onCardDelete={handleCardDelete} />
           <ImagePopup onClose={closeAllPopups} card={selectedCard} />
-          <InfoTooltip onClose={closeAllPopups} isOpen={isInfoTooltipOpen} isSuccess={isRegistrationSuccessful}/>
+          <InfoTooltip onClose={closeAllPopups} isOpen={isInfoTooltipOpen} isSuccess={isRegistrationSuccessful} />
         </div>
       </div>
     </CurrentUserContext.Provider>
