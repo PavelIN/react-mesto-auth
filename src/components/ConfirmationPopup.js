@@ -6,7 +6,6 @@ const ConfirmationPopup = (props) => {
 
   const handleDeleteClick = () => {
     props.onCardDelete(props.cardId);
-    console.log(props.cardId);
   };
 
   function handleSubmit(e) {

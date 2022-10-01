@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-const Login = ({ onLogin }) => {
+const Login = ({ onLogin}) => {
 
   const [enteredValues, setEnteredValues] = React.useState({});
 

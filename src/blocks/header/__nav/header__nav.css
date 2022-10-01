@@ -11,3 +11,17 @@
     margin-right: 24px;
     color: #fff;
   }
+
+  @media screen and (max-width: 450px) {
+    .header__nav span {
+      margin-right: 12px;
+    }
+    .header__nav {
+      display: flex;
+      margin: 10px 0 0;
+      padding: 0;
+      font-size: 13px;
+      line-height: 22px;
+      font-family: 'Inter', Arial, Helvetica, sans-serif;
+    }
+  }

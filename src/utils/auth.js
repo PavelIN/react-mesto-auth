@@ -5,7 +5,7 @@ export const headers = {
   'Content-Type': 'application/json',
 };
 
-export const responce = (res) => {
+export const response = (res) => {
   if (res.ok) {
     return res.json();
   }
@@ -18,7 +18,7 @@ export const register = ({ email, password }) => {
     headers,
     body: JSON.stringify({ email, password }),
   })
-    .then(res => responce(res));
+    .then(res => response(res));
 };
 
 export const authorize = ({ email, password }) => {
@@ -26,7 +26,7 @@ export const authorize = ({ email, password }) => {
     method: 'POST',
     headers,
     body: JSON.stringify({ email, password }),
-  }).then((res) => responce(res));
+  }).then((res) => response(res));
 };
 
 export const getContent = (token) => {
@@ -36,5 +36,5 @@ export const getContent = (token) => {
       ...headers,
       Authorization: `Bearer ${token}`,
     },
-  }).then((res) => responce(res));
+  }).then((res) => response(res));
 };

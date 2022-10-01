@@ -34,7 +34,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
   const [isRegistrationSuccessful, setIsRegistrationSuccessful] = React.useState(false);
-  const [isEmail, setIsEmail] = React.useState('');
+  const [userEmail, setUserEmail] = React.useState('');
 
 
   function handleCardLike(card) {
@@ -180,6 +180,7 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
+        setIsRegistrationSuccessful(false);
         openInfoTooltip();
       });
   }
@@ -192,7 +193,7 @@ function App() {
     auth
       .getContent(jwt)
       .then((data) => {
-        setIsEmail(data.data.email);
+        setUserEmail(data.data.email);
         setIsLoggedIn(true);
         hist.push('/');
       })
@@ -206,6 +207,7 @@ function App() {
   const handleSignOut = () => {
     setIsLoggedIn(false);
     localStorage.removeItem('jwt');
+    setUserEmail(" ");
     hist.push('/sign-in');
   };
 
@@ -213,11 +215,10 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="body">
-        <div className="page">
-          <Header email={isEmail} loggedIn={isLoggedIn} onSignOut={handleSignOut} />
+          <Header email={userEmail} loggedIn={isLoggedIn} onSignOut={handleSignOut} />
           <Switch>
             <Route path="/sign-in">
-              <Login onLogin={handleAuthorization} />
+              <Login onLogin={handleAuthorization}/>
             </Route>
             <Route path="/sign-up">
               <Register onRegister={handleRegistration} />
@@ -244,7 +245,6 @@ function App() {
           <ImagePopup onClose={closeAllPopups} card={selectedCard} />
           <InfoTooltip onClose={closeAllPopups} isOpen={isInfoTooltipOpen} isSuccess={isRegistrationSuccessful} />
         </div>
-      </div>
     </CurrentUserContext.Provider>
   );
 }
