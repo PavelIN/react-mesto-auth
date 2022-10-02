@@ -27,7 +27,7 @@ const Register = ({ onRegister }) => {
           name="email"
           type="email"
           placeholder="Email"
-          value={enteredValues.email}
+          value={enteredValues.email || ""}
           onChange={handleChange}
         />
         <input
@@ -36,7 +36,7 @@ const Register = ({ onRegister }) => {
           type="password"
           minLength="8"
           placeholder="Пароль"
-          value={enteredValues.password}
+          value={enteredValues.password || ""}
           onChange={handleChange}
         />
         <button type="submit">Зарегистрироваться</button>

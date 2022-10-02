@@ -1,4 +1,5 @@
 .popup__signup-title {
+  font-family: "Inter", "Arial ", sans-serif;
     display: block;
     max-width: 358px;
     margin: 0 auto 23px;

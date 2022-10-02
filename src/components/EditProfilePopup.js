@@ -44,7 +44,7 @@ const EditProfilePopup = (props) => {
         placeholder="имя" required minLength="2" maxLength="40" value={name || ""} />
       <span className="form__input-error name-error"></span>
       <input onChange={handleChangeDes} id="job" className="form__input form__input_item_job" type="text" name="job"
-        placeholder="вид деятельности" required minLength="2" maxLength="200" value={name || ""} />
+        placeholder="вид деятельности" required minLength="2" maxLength="200" value={description || ""} />
       <span className="job-error form__input-error"></span>
     </fieldset>
   </PopupWithForm>)
