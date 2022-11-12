@@ -21,9 +21,12 @@
 
 
 
-    getInitialCards() {
+    getInitialCards(jwt) {
       return fetch(`${this._baseUrl}/cards`, {
-        headers: this._headers
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${jwt}`,
+        }
       })
         .then(res => this._responce(res));
     }
@@ -86,12 +89,13 @@
   }
 
   const api = new Api({
-    baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-46',
+    baseUrl: 'https://api.oranlon.nomoredomains.icu',
     headers: {
-      authorization: 'bda37d30-eb0b-48f8-b6b1-703e26a88ba5',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
     }
   });
+
 
 
 
